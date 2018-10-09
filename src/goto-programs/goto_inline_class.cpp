@@ -66,7 +66,6 @@ void goto_inlinet::parameter_assignments(
       decl->code=code_declt(symbol.symbol_expr());
       decl->code.add_source_location()=source_location;
       decl->source_location=source_location;
-      decl->function=adjust_function?target->function:function_name;
     }
 
     // this is the actual parameter
@@ -129,8 +128,6 @@ void goto_inlinet::parameter_assignments(
       dest.add_instruction(ASSIGN);
       dest.instructions.back().source_location=source_location;
       dest.instructions.back().code.swap(assignment);
-      dest.instructions.back().function=
-        adjust_function?target->function:function_name;
     }
 
     if(it1!=arguments.end())
@@ -174,7 +171,6 @@ void goto_inlinet::parameter_destruction(
       dead->code=code_deadt(symbol.symbol_expr());
       dead->code.add_source_location()=source_location;
       dead->source_location=source_location;
-      dead->function=adjust_function?target->function:function_name;
     }
   }
 }
@@ -280,10 +276,6 @@ void goto_inlinet::insert_function_body(
     end.is_end_function(),
     "final instruction of a function must be an END_FUNCTION");
   end.type=LOCATION;
-
-  if(adjust_function)
-    for(auto &instruction : body.instructions)
-      instruction.function=target->function;
 
   // make sure the inlined function does not introduce hiding
   if(goto_function.is_hidden())
