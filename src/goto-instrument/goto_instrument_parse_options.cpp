@@ -1040,7 +1040,7 @@ void goto_instrument_parse_optionst::instrument_goto_program()
     }
 
     status() << "Performing full inlining" << eom;
-    goto_inline(goto_model, get_message_handler(), true);
+    goto_inline(goto_model, get_message_handler());
   }
 
   if(cmdline.isset("show-custom-bitvector-analysis") ||
@@ -1114,7 +1114,6 @@ void goto_instrument_parse_optionst::instrument_goto_program()
         goto_model,
         function,
         ui_message_handler,
-        true,
         caching);
     }
     else
@@ -1127,7 +1126,6 @@ void goto_instrument_parse_optionst::instrument_goto_program()
           goto_model,
           function,
           ui_message_handler,
-          true,
           caching);
 
       if(have_file)
@@ -1158,7 +1156,7 @@ void goto_instrument_parse_optionst::instrument_goto_program()
     do_indirect_call_and_rtti_removal();
 
     status() << "Partial inlining" << eom;
-    goto_partial_inline(goto_model, ui_message_handler, 0, true);
+    goto_partial_inline(goto_model, ui_message_handler, 0);
 
     goto_model.goto_functions.update();
     goto_model.goto_functions.compute_loop_numbers();

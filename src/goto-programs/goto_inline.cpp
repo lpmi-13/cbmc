@@ -21,30 +21,18 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include "goto_inline_class.h"
 
-void goto_inline(
-  goto_modelt &goto_model,
-  message_handlert &message_handler,
-  bool adjust_function)
+void goto_inline(goto_modelt &goto_model, message_handlert &message_handler)
 {
   const namespacet ns(goto_model.symbol_table);
-  goto_inline(
-    goto_model.goto_functions,
-    ns,
-    message_handler,
-    adjust_function);
+  goto_inline(goto_model.goto_functions, ns, message_handler);
 }
 
 void goto_inline(
   goto_functionst &goto_functions,
   const namespacet &ns,
-  message_handlert &message_handler,
-  bool adjust_function)
+  message_handlert &message_handler)
 {
-  goto_inlinet goto_inline(
-    goto_functions,
-    ns,
-    message_handler,
-    adjust_function);
+  goto_inlinet goto_inline(goto_functions, ns, message_handler);
 
   typedef goto_functionst::goto_functiont goto_functiont;
 
@@ -105,20 +93,14 @@ void goto_inline(
 /// \param message_handler: Message handler used by goto_inlinet.
 /// \param smallfunc_limit: The maximum number of instructions in functions to
 ///   be inlined.
-/// \param adjust_function: Tell goto_inlinet to adjust function.
 void goto_partial_inline(
   goto_modelt &goto_model,
   message_handlert &message_handler,
-  unsigned smallfunc_limit,
-  bool adjust_function)
+  unsigned smallfunc_limit)
 {
   const namespacet ns(goto_model.symbol_table);
   goto_partial_inline(
-    goto_model.goto_functions,
-    ns,
-    message_handler,
-    smallfunc_limit,
-    adjust_function);
+    goto_model.goto_functions, ns, message_handler, smallfunc_limit);
 }
 
 /// Inline all function calls to functions either marked as "inlined" or
@@ -129,19 +111,13 @@ void goto_partial_inline(
 /// \param message_handler: Message handler used by goto_inlinet.
 /// \param smallfunc_limit: The maximum number of instructions in functions to
 ///   be inlined.
-/// \param adjust_function: Tell goto_inlinet to adjust function.
 void goto_partial_inline(
   goto_functionst &goto_functions,
   const namespacet &ns,
   message_handlert &message_handler,
-  unsigned smallfunc_limit,
-  bool adjust_function)
+  unsigned smallfunc_limit)
 {
-  goto_inlinet goto_inline(
-    goto_functions,
-    ns,
-    message_handler,
-    adjust_function);
+  goto_inlinet goto_inline(goto_functions, ns, message_handler);
 
   typedef goto_functionst::goto_functiont goto_functiont;
 
@@ -212,13 +188,11 @@ void goto_partial_inline(
 /// \param goto_model: Source of the symbol table and function map to use.
 /// \param function: The function whose calls to inline.
 /// \param message_handler: Message handler used by goto_inlinet.
-/// \param adjust_function: Tell goto_inlinet to adjust function.
 /// \param caching: Tell goto_inlinet to cache.
 void goto_function_inline(
   goto_modelt &goto_model,
   const irep_idt function,
   message_handlert &message_handler,
-  bool adjust_function,
   bool caching)
 {
   const namespacet ns(goto_model.symbol_table);
@@ -227,7 +201,6 @@ void goto_function_inline(
     function,
     ns,
     message_handler,
-    adjust_function,
     caching);
 }
 
@@ -236,21 +209,18 @@ void goto_function_inline(
 /// \param function: The function whose calls to inline.
 /// \param ns: Namespace used by goto_inlinet.
 /// \param message_handler: Message handler used by goto_inlinet.
-/// \param adjust_function: Tell goto_inlinet to adjust function.
 /// \param caching: Tell goto_inlinet to cache.
 void goto_function_inline(
   goto_functionst &goto_functions,
   const irep_idt function,
   const namespacet &ns,
   message_handlert &message_handler,
-  bool adjust_function,
   bool caching)
 {
   goto_inlinet goto_inline(
     goto_functions,
     ns,
     message_handler,
-    adjust_function,
     caching);
 
   goto_functionst::function_mapt::iterator f_it=
@@ -286,7 +256,6 @@ jsont goto_function_inline_and_log(
   goto_modelt &goto_model,
   const irep_idt function,
   message_handlert &message_handler,
-  bool adjust_function,
   bool caching)
 {
   const namespacet ns(goto_model.symbol_table);
@@ -295,7 +264,6 @@ jsont goto_function_inline_and_log(
     goto_model.goto_functions,
     ns,
     message_handler,
-    adjust_function,
     caching);
 
   goto_functionst::function_mapt::iterator f_it=

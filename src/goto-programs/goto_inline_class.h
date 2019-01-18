@@ -24,12 +24,10 @@ public:
     goto_functionst &goto_functions,
     const namespacet &ns,
     message_handlert &message_handler,
-    bool adjust_function,
     bool caching=true):
     messaget(message_handler),
     goto_functions(goto_functions),
     ns(ns),
-    adjust_function(adjust_function),
     caching(caching)
   {
   }
@@ -125,7 +123,6 @@ protected:
   goto_functionst &goto_functions;
   const namespacet &ns;
 
-  const bool adjust_function;
   const bool caching;
 
   goto_inline_logt inline_log;
