@@ -104,7 +104,7 @@ void w_guardst::add_initialization(goto_programt &goto_program) const
   }
 }
 
-std::string comment(const rw_set_baset::entryt &entry, bool write)
+static std::string comment(const rw_set_baset::entryt &entry, bool write)
 {
   std::string result;
   if(write)
@@ -117,9 +117,7 @@ std::string comment(const rw_set_baset::entryt &entry, bool write)
   return result;
 }
 
-bool is_shared(
-  const namespacet &ns,
-  const symbol_exprt &symbol_expr)
+static bool is_shared(const namespacet &ns, const symbol_exprt &symbol_expr)
 {
   const irep_idt &identifier=symbol_expr.get_identifier();
 
@@ -137,9 +135,7 @@ bool is_shared(
   return symbol.is_shared();
 }
 
-bool has_shared_entries(
-  const namespacet &ns,
-  const rw_set_baset &rw_set)
+static bool has_shared_entries(const namespacet &ns, const rw_set_baset &rw_set)
 {
   for(rw_set_baset::entriest::const_iterator
       it=rw_set.r_entries.begin();
@@ -158,11 +154,12 @@ bool has_shared_entries(
   return false;
 }
 
-void race_check(
+static void race_check(
   value_setst &value_sets,
   symbol_tablet &symbol_table,
+  const irep_idt &function_id,
   L_M_ARG(const goto_functionst::goto_functiont &goto_function)
-  goto_programt &goto_program,
+    goto_programt &goto_program,
   w_guardst &w_guards)
 {
   namespacet ns(symbol_table);
@@ -177,7 +174,8 @@ void race_check(
 
     if(instruction.is_assign())
     {
-      rw_set_loct rw_set(ns, value_sets, i_it L_M_LAST_ARG(local_may));
+      rw_set_loct rw_set(
+        ns, value_sets, function_id, i_it L_M_LAST_ARG(local_may));
 
       if(!has_shared_entries(ns, rw_set))
         continue;
@@ -266,6 +264,7 @@ void race_check(
 void race_check(
   value_setst &value_sets,
   symbol_tablet &symbol_table,
+  const irep_idt &function_id,
 #ifdef LOCAL_MAY
   const goto_functionst::goto_functiont &goto_function,
 #endif
@@ -276,8 +275,8 @@ void race_check(
   race_check(
     value_sets,
     symbol_table,
-    L_M_ARG(goto_function)
-    goto_program,
+    function_id,
+    L_M_ARG(goto_function) goto_program,
     w_guards);
 
   w_guards.add_initialization(goto_program);
@@ -296,8 +295,8 @@ void race_check(
       race_check(
         value_sets,
         goto_model.symbol_table,
-        L_M_ARG(f_it->second)
-        f_it->second.body,
+        f_it->first,
+        L_M_ARG(f_it->second) f_it->second.body,
         w_guards);
 
   // get "main"
