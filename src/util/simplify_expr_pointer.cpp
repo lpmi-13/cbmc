@@ -288,10 +288,7 @@ bool simplify_exprt::simplify_pointer_offset(exprt &expr)
              tmp.op0().operands().size()==1 &&
              tmp.op0().op0().id()==ID_address_of)
           {
-            expr=tmp.op1();
-            if(type!=expr.type())
-              expr.make_typecast(type);
-
+            expr = typecast_exprt::conditional_cast(tmp.op1(), type);
             simplify_node(expr);
             return false;
           }
@@ -299,10 +296,7 @@ bool simplify_exprt::simplify_pointer_offset(exprt &expr)
                   tmp.op1().operands().size()==1 &&
                   tmp.op1().op0().id()==ID_address_of)
           {
-            expr=tmp.op0();
-            if(type!=expr.type())
-              expr.make_typecast(type);
-
+            expr = typecast_exprt::conditional_cast(tmp.op0(), type);
             simplify_node(expr);
             return false;
           }

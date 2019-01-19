@@ -171,17 +171,16 @@ exprt dynamic_object_upper_bound(
   {
     op=ID_gt;
 
-    if(ns.follow(object_offset.type())!=
-       ns.follow(access_size.type()))
-      object_offset.make_typecast(access_size.type());
-    sum=plus_exprt(object_offset, access_size);
+    const auto object_offset_casted =
+      typecast_exprt::conditional_cast(object_offset, access_size.type());
+
+    sum = plus_exprt(object_offset_casted, access_size);
   }
 
-  if(ns.follow(sum.type())!=
-     ns.follow(malloc_size.type()))
-    sum.make_typecast(malloc_size.type());
+  const auto sum_casted =
+    typecast_exprt::conditional_cast(sum, malloc_size.type());
 
-  return binary_relation_exprt(sum, op, malloc_size);
+  return binary_relation_exprt(sum_casted, op, malloc_size);
 }
 
 exprt object_upper_bound(
@@ -204,18 +203,16 @@ exprt object_upper_bound(
   {
     op=ID_gt;
 
-    if(ns.follow(object_offset.type())!=
-       ns.follow(access_size.type()))
-      object_offset.make_typecast(access_size.type());
-    sum=plus_exprt(object_offset, access_size);
+    const auto object_offset_casted =
+      typecast_exprt::conditional_cast(object_offset, access_size.type());
+
+    sum = plus_exprt(object_offset_casted, access_size);
   }
 
+  const auto sum_casted =
+    typecast_exprt::conditional_cast(sum, object_size_expr.type());
 
-  if(ns.follow(sum.type())!=
-     ns.follow(object_size_expr.type()))
-    sum.make_typecast(object_size_expr.type());
-
-  return binary_relation_exprt(sum, op, object_size_expr);
+  return binary_relation_exprt(sum_casted, op, object_size_expr);
 }
 
 exprt object_lower_bound(
