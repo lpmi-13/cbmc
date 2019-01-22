@@ -694,15 +694,12 @@ void symex_target_equationt::SSA_stept::output(
   const namespacet &ns,
   std::ostream &out) const
 {
-  if(source.is_set)
-  {
-    out << "Thread " << source.thread_nr;
+  out << "Thread " << source.thread_nr;
 
-    if(source.pc->source_location.is_not_nil())
-      out << " " << source.pc->source_location << '\n';
-    else
-      out << '\n';
-  }
+  if(source.pc->source_location.is_not_nil())
+    out << " " << source.pc->source_location << '\n';
+  else
+    out << '\n';
 
   switch(type)
   {
@@ -795,15 +792,12 @@ void symex_target_equationt::SSA_stept::output(
 
 void symex_target_equationt::SSA_stept::output(std::ostream &out) const
 {
-  if(source.is_set)
-  {
-    out << "Thread " << source.thread_nr;
+  out << "Thread " << source.thread_nr;
 
-    if(source.pc->source_location.is_not_nil())
-      out << " " << source.pc->source_location << '\n';
-    else
-      out << '\n';
-  }
+  if(source.pc->source_location.is_not_nil())
+    out << " " << source.pc->source_location << '\n';
+  else
+    out << '\n';
 
   switch(type)
   {

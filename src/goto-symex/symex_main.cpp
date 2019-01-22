@@ -306,7 +306,8 @@ void goto_symext::symex_from_entry_point_of(
     throw unsupported_operation_exceptiont("the program has no entry point");
   }
 
-  statet state;
+  statet state(symex_targett::sourcet(
+    goto_functionst::entry_point(), start_function->body));
 
   state.run_validation_checks = symex_config.run_validation_checks;
 
