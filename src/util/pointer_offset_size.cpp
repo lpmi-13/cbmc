@@ -593,8 +593,11 @@ exprt build_sizeof_expr(
   const constant_exprt &expr,
   const namespacet &ns)
 {
-  const typet &type=
-    static_cast<const typet &>(expr.find(ID_C_c_sizeof_type));
+  // need to cast down to access 'find'
+  const auto &expr_as_irep = static_cast<const irept &>(expr);
+
+  const typet &type =
+    static_cast<const typet &>(expr_as_irep.find(ID_C_c_sizeof_type));
 
   if(type.is_nil())
     return nil_exprt();

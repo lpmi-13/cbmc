@@ -319,6 +319,29 @@ public:
   const_unique_depth_iteratort unique_depth_cend() const;
 };
 
+/// Class for expressions that offers a restriction of the API
+/// offered by exprt. Notably, access to non-type-safe methods such
+/// as opX() is protected.
+/// This API will eventually replace exprt.
+class expr_protectedt : public exprt
+{
+protected:
+  // constructor
+  expr_protectedt(const irep_idt &_id, const typet &_type) : exprt(_id, _type)
+  {
+  }
+
+  // protect these low-level methods
+  using exprt::add;
+  using exprt::make_bool;
+  using exprt::make_typecast;
+  using exprt::op0;
+  using exprt::op1;
+  using exprt::op2;
+  using exprt::op3;
+  using exprt::remove;
+};
+
 class expr_visitort
 {
 public:
