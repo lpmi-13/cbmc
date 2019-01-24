@@ -657,9 +657,12 @@ void value_set_fivrnst::get_reference_set_rec(
         index_exprt index_expr(
           object, from_integer(0, index_type()), expr.type());
 
-        // adjust type?
-        if(object.type() != array_type)
-          index_expr.make_typecast(array.type());
+        exprt index_casted;
+
+        if(object.type().id() != "#REF#" && object.type() != array_type)
+          index_casted = typecast_exprt(index_expr, array.type());
+        else
+          index_casted = index_expr;
 
         offsett o = a_it->second;
         mp_integer i;
@@ -672,7 +675,7 @@ void value_set_fivrnst::get_reference_set_rec(
         else
           o.reset();
 
-        insert_from(dest, index_expr, o);
+        insert_from(dest, index_casted, o);
       }
     }
 
